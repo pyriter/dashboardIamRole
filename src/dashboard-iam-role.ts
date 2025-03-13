@@ -1,4 +1,4 @@
-import { aws_iam as iam } from 'aws-cdk-lib';
+import { aws_iam as iam, RemovalPolicy } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 
 export interface DashboardIamRoleProps {
@@ -24,6 +24,7 @@ export class DashboardIamRole extends Construct {
           ),
         ],
       });
+      this.role.applyRemovalPolicy(RemovalPolicy.DESTROY);
     }
   }
 }
