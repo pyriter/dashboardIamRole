@@ -1,1 +1,1 @@
-export * from './account-iam-role';
+export * from './dashboard-iam-role';

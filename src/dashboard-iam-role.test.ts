@@ -1,22 +1,23 @@
 import { Stack } from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
-import { AccountIamRole } from './account-iam-role';
+import { DashboardIamRole } from './dashboard-iam-role';
 
-describe('AccountIamRole', () => {
+describe('DashboardIamRole', () => {
   test('creates IAM role when shouldCreate is true', () => {
     // ARRANGE
     const stack = new Stack();
 
     // ACT
-    new AccountIamRole(stack, 'TestRole', {
+    new DashboardIamRole(stack, 'TestRole', {
       shouldCreate: true,
     });
 
     // ASSERT
     const template = Template.fromStack(stack);
     template.hasResourceProperties('AWS::IAM::Role', {
-      RoleName: 'ACCOUNT_DASHBOARD_DO_NOT_DELETE',
-      Description: 'An IAM role for account dashboard',
+      RoleName: 'PYRITER_DASHBOARD_DO_NOT_DELETE',
+      Description:
+        'An IAM role for dashboard. See here for more info: https://www.npmjs.com/package/@pyriter/dashboard-iam-role',
       AssumeRolePolicyDocument: {
         Statement: [
           {
@@ -51,14 +52,14 @@ describe('AccountIamRole', () => {
     const stack = new Stack();
 
     // ACT
-    const accountIamRole = new AccountIamRole(stack, 'TestRole', {
+    const dashboardRole = new DashboardIamRole(stack, 'TestRole', {
       shouldCreate: false,
     });
 
     // ASSERT
     const template = Template.fromStack(stack);
     template.resourceCountIs('AWS::IAM::Role', 0);
-    expect(accountIamRole.role).toBeNull();
+    expect(dashboardRole.role).toBeNull();
   });
 
   test('creates IAM role when shouldCreate is not provided', () => {
@@ -66,12 +67,12 @@ describe('AccountIamRole', () => {
     const stack = new Stack();
 
     // ACT
-    const accountIamRole = new AccountIamRole(stack, 'TestRole', {});
+    const dashboardRole = new DashboardIamRole(stack, 'TestRole', {});
 
     // ASSERT
     const template = Template.fromStack(stack);
     template.resourceCountIs('AWS::IAM::Role', 1);
-    expect(accountIamRole.role).not.toBeNull();
+    expect(dashboardRole.role).not.toBeNull();
   });
 
   test('role has correct managed policy', () => {
@@ -79,7 +80,7 @@ describe('AccountIamRole', () => {
     const stack = new Stack();
 
     // ACT
-    new AccountIamRole(stack, 'TestRole', {});
+    new DashboardIamRole(stack, 'TestRole', {});
 
     // ASSERT
     const template = Template.fromStack(stack);
@@ -98,6 +99,22 @@ describe('AccountIamRole', () => {
           ],
         },
       ],
+    });
+  });
+
+  test('role has correct name and description', () => {
+    // ARRANGE
+    const stack = new Stack();
+
+    // ACT
+    new DashboardIamRole(stack, 'TestRole', {});
+
+    // ASSERT
+    const template = Template.fromStack(stack);
+    template.hasResourceProperties('AWS::IAM::Role', {
+      RoleName: 'PYRITER_DASHBOARD_DO_NOT_DELETE',
+      Description:
+        'An IAM role for dashboard. See here for more info: https://www.npmjs.com/package/@pyriter/dashboard-iam-role',
     });
   });
 });

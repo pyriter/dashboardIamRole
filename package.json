@@ -5,25 +5,18 @@
   "main": "dist/main.js",
   "type": "module",
   "typings": "dist/main.d.ts",
-  "keywords": [
-    "request routing",
-    "aws lambda request routing",
-    "request",
-    "route",
-    "rest api",
-    "api"
-  ],
+  "keywords": [],
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/pyriter/unrest.git"
+    "url": "git+ssh://git@github.com/pyriter/dashboardIamRole.git"
   },
   "author": "Phong Vuong",
   "license": "GPL",
   "private": false,
   "bugs": {
-    "url": "https://github.com/pyriter/unrest/issues"
+    "url": "https://github.com/pyriter/dashboardIamRole/issues"
   },
-  "homepage": "https://github.com/pyriter/unrest#readme",
+  "homepage": "https://github.com/pyriter/dashboardIamRole#readme",
   "scripts": {
     "test": "jest --silent --detectOpenHandles --coverage --runInBand",
     "test-dev": "jest --watch --silent --detectOpenHandles --coverage",
