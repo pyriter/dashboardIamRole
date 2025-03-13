@@ -1,6 +1,6 @@
 {
   "name": "@pyriter/dashboard-iam-role",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Dashboard IAM ROLE",
   "main": "dist/main.js",
   "type": "module",
