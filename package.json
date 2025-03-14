@@ -43,7 +43,7 @@
     ],
     "testTimeout": 300000,
     "roots": [
-      "<rootDir>/src"
+      "<rootDir>/test"
     ],
     "testMatch": [
       "**/__tests__/**/*.+(ts|tsx|js)",
@@ -57,7 +57,7 @@
     "*.ts": "prettier --write"
   },
   "files": [
-    "dist/**/*"
+    "lib/**/*"
   ],
   "dependencies": {
     "aws-cdk-lib": "^2.183.0",
