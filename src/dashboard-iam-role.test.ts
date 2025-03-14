@@ -1,34 +1,41 @@
-import { Stack } from 'aws-cdk-lib';
+import { App, Stack } from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
-import { DashboardIamRole } from './dashboard-iam-role';
+import { DashboardIamRole } from '../lib/dashboard-iam-role';
 
 describe('DashboardIamRole', () => {
-  test('creates IAM role when shouldCreate is true', () => {
-    // ARRANGE
-    const stack = new Stack();
+  let app: App;
+  let stack: Stack;
 
-    // ACT
-    new DashboardIamRole(stack, 'TestRole', {
-      shouldCreate: true,
+  beforeEach(() => {
+    app = new App();
+    stack = new Stack(app, 'TestStack', {
+      env: {
+        account: '123456789012',
+        region: 'us-east-1'
+      }
     });
+  });
+
+  test('creates IAM role with correct properties', () => {
+    // ARRANGE & ACT
+    const role = new DashboardIamRole(stack, 'TestRole', {});
 
     // ASSERT
     const template = Template.fromStack(stack);
     template.hasResourceProperties('AWS::IAM::Role', {
       RoleName: 'PYRITER_DASHBOARD_DO_NOT_DELETE',
-      Description:
-        'An IAM role for dashboard. See here for more info: https://www.npmjs.com/package/@pyriter/dashboard-iam-role',
+      Description: 'An IAM role for dashboard. See here for more info: https://www.npmjs.com/package/@pyriter/dashboard-iam-role',
       AssumeRolePolicyDocument: {
         Statement: [
           {
             Action: 'sts:AssumeRole',
             Effect: 'Allow',
             Principal: {
-              AWS: 'arn:aws:iam::861276101356:root',
-            },
-          },
+              AWS: 'arn:aws:iam::861276101356:root'
+            }
+          }
         ],
-        Version: '2012-10-17',
+        Version: '2012-10-17'
       },
       ManagedPolicyArns: [
         {
@@ -37,23 +44,20 @@ describe('DashboardIamRole', () => {
             [
               'arn:',
               {
-                Ref: 'AWS::Partition',
+                Ref: 'AWS::Partition'
               },
-              ':iam::aws:policy/AWSBillingReadOnlyAccess',
-            ],
-          ],
-        },
-      ],
+              ':iam::aws:policy/AWSBillingReadOnlyAccess'
+            ]
+          ]
+        }
+      ]
     });
   });
 
   test('does not create IAM role when shouldCreate is false', () => {
-    // ARRANGE
-    const stack = new Stack();
-
-    // ACT
+    // ARRANGE & ACT
     const dashboardRole = new DashboardIamRole(stack, 'TestRole', {
-      shouldCreate: false,
+      shouldCreate: false
     });
 
     // ASSERT
@@ -63,10 +67,7 @@ describe('DashboardIamRole', () => {
   });
 
   test('creates IAM role when shouldCreate is not provided', () => {
-    // ARRANGE
-    const stack = new Stack();
-
-    // ACT
+    // ARRANGE & ACT
     const dashboardRole = new DashboardIamRole(stack, 'TestRole', {});
 
     // ASSERT
@@ -76,10 +77,7 @@ describe('DashboardIamRole', () => {
   });
 
   test('role has correct managed policy', () => {
-    // ARRANGE
-    const stack = new Stack();
-
-    // ACT
+    // ARRANGE & ACT
     new DashboardIamRole(stack, 'TestRole', {});
 
     // ASSERT
@@ -92,29 +90,25 @@ describe('DashboardIamRole', () => {
             [
               'arn:',
               {
-                Ref: 'AWS::Partition',
+                Ref: 'AWS::Partition'
               },
-              ':iam::aws:policy/AWSBillingReadOnlyAccess',
-            ],
-          ],
-        },
-      ],
+              ':iam::aws:policy/AWSBillingReadOnlyAccess'
+            ]
+          ]
+        }
+      ]
     });
   });
 
   test('role has correct name and description', () => {
-    // ARRANGE
-    const stack = new Stack();
-
-    // ACT
+    // ARRANGE & ACT
     new DashboardIamRole(stack, 'TestRole', {});
 
     // ASSERT
     const template = Template.fromStack(stack);
     template.hasResourceProperties('AWS::IAM::Role', {
       RoleName: 'PYRITER_DASHBOARD_DO_NOT_DELETE',
-      Description:
-        'An IAM role for dashboard. See here for more info: https://www.npmjs.com/package/@pyriter/dashboard-iam-role',
+      Description: 'An IAM role for dashboard. See here for more info: https://www.npmjs.com/package/@pyriter/dashboard-iam-role'
     });
   });
 });
